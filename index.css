@@ -1,0 +1,7 @@
+/* courses list window-size-friendly */
+@media (max-width: 800px) {
+    #reviews-list > div {
+        display: inline-block;
+        width: 100%
+    }
+}
