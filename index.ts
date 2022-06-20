@@ -24,7 +24,7 @@ function renderReview(review) {
             <div class="card-header">
                 <h1>${review['subject']}
                     <div class="float-end">
-                        <button class="btn btn-secondary me-2" onclick="modifyReviewButton(${review['id']})">
+                        <button class="btn btn-secondary me-2" data-bs-toggle="modal" data-bs-target="#edit-review-modal-${review['id']}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                 <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
@@ -65,6 +65,48 @@ function renderReview(review) {
                     </div>
                 </div>
             </div>
+            <div class="modal fade" id="edit-review-modal-${review['id']}" tabindex="-1" aria-labelledby="edit-review-modal-label-${review['id']}" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="edit-review-modal-label-${review['id']}">Edit review</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form id="edit-review-form-${review['id']}" role="form" data-lpignore="true" onsubmit="modifyReview(this, ${review['id']})">
+                            <div class="modal-body">
+                                <div class="mb-3 form-floating">
+                                    <input type="text" class="form-control" id="subject" placeholder="N/A" value="${review['subject']}" required>
+                                    <label for="subject" class="form-label">Subject</label>
+                                </div>
+                                <div class="mb-3 form-floating">
+                                    <input type="text" class="form-control" id="topic" placeholder="N/A" value="${review['topic']}" required>
+                                    <label for="topic" class="form-label">Topic</label>
+                                </div>
+                                <div class="mb-3 form-floating">
+                                    <input type="text" class="form-control" id="sub-topic" placeholder="N/A" value="${review['sub-topic']}" required>
+                                    <label for="sub-topic" class="form-label">Sub-topic</label>
+                                </div>
+                                <div class="mb-3 form-floating">
+                                    <textarea class="form-control" id="content" placeholder="N/A" required>${review['content']}</textarea>
+                                    <label for="content" class="form-label">Content</label>
+                                </div>
+                                <div class="mb-3 form-floating">
+                                    <textarea class="form-control" id="additional-information" placeholder="N/A" rows="10">${review['additional-information']}</textarea>
+                                    <label for="additional-information" class="form-label">Additional information</label>
+                                </div>
+                                <div class="mb-3 form-floating">
+                                    <textarea class="form-control" id="resources" placeholder="N/A" rows="5">${review['resources']}</textarea>
+                                    <label for="resources" class="form-label">Resources</label>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button id="edit-review-modal-close-btn-${review['id']}" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button id="edit-review-modal-submit-btn-${review['id']}" type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
         `
 }
@@ -85,38 +127,18 @@ function addReview() {
     }, 1000)
 }
 
-function modifyReviewButton(id: number) {
-    let createReviewModelLabel = document.getElementById('create-review-model-label');
-    let createReviewModelLabelText = createReviewModelLabel.textContent;
-    createReviewModelLabel.textContent = "Edit review";
-
+function modifyReview(form: HTMLFormElement, id: number) {
     let previousReview = JSON.parse(localStorage.getItem('review-' + id));
+    let review = createReview(form);
 
-    document.forms['new-review-form']['subject'].value = previousReview['subject'];
-    document.forms['new-review-form']['topic'].value = previousReview['topic'];
-    document.forms['new-review-form']['sub-topic'].value = previousReview['sub-topic'];
-    document.forms['new-review-form']['content'].value = previousReview['content'];
-    document.forms['new-review-form']['additional-information'].value = previousReview['additional-information'];
-    document.forms['new-review-form']['resources'].value = previousReview['resources'];
+    review['id'] = previousReview['id'];
+    review['next-attempt'] = previousReview['next-attempt'];
+    review['attempts'] = previousReview['attempts'];
+    localStorage.setItem('review-' + review.id, JSON.stringify(review));
 
-    let form = <HTMLFormElement>document.getElementById('new-review-form');
+    document.getElementById("edit-review-modal-close-btn-" + id).click();
 
-    form.removeEventListener('submit', addReview);
-    form.onsubmit = function () {
-        let review = createReview(form);
-        review['id'] = previousReview['id'];
-        review['next-attempt'] = previousReview['next-attempt'];
-        review['attempts'] = previousReview['attempts'];
-        localStorage.setItem('review-' + review.id, JSON.stringify(review));
-
-        form.addEventListener('submit', addReview);
-        createReviewModelLabel.textContent = createReviewModelLabelText;
-        document.getElementById("create-review-model-close-btn").click();
-
-        loadReviews();
-    }
-
-    document.getElementById('create-review-modal-btn').click();
+    loadReviews();
 }
 
 function createReview(form: HTMLFormElement) {
