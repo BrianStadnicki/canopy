@@ -88,17 +88,16 @@ function addReview() {
 function modifyReviewButton(id: number) {
     let createReviewModelLabel = document.getElementById('create-review-model-label');
     let createReviewModelLabelText = createReviewModelLabel.textContent;
+    createReviewModelLabel.textContent = "Edit review";
 
     let previousReview = JSON.parse(localStorage.getItem('review-' + id));
-    console.log(previousReview)
 
-    document.getElementById('subject').setAttribute('value', previousReview['subject']);
-    document.getElementById('topic').setAttribute('value', previousReview['topic']);
-    document.getElementById('sub-topic').setAttribute('value', previousReview['sub-topic']);
-    document.getElementById('content').setAttribute('value', previousReview['content']);
-    document.getElementById('content').innerText = previousReview['content'];
-    document.getElementById('additional-information').innerText = previousReview['additional-information'];
-    document.getElementById('resources').innerText = previousReview['resources'];
+    document.forms['new-review-form']['subject'].value = previousReview['subject'];
+    document.forms['new-review-form']['topic'].value = previousReview['topic'];
+    document.forms['new-review-form']['sub-topic'].value = previousReview['sub-topic'];
+    document.forms['new-review-form']['content'].value = previousReview['content'];
+    document.forms['new-review-form']['additional-information'].value = previousReview['additional-information'];
+    document.forms['new-review-form']['resources'].value = previousReview['resources'];
 
     let form = <HTMLFormElement>document.getElementById('new-review-form');
 
@@ -112,6 +111,7 @@ function modifyReviewButton(id: number) {
 
         form.addEventListener('submit', addReview);
         createReviewModelLabel.textContent = createReviewModelLabelText;
+        document.getElementById("create-review-model-close-btn").click();
 
         loadReviews();
     }
