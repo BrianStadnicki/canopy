@@ -70,7 +70,10 @@ function renderReview(review) {
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1>${review['subject']}</h1>     
+                            <div class="container row">
+                                <h1 class="col col-7">${review['subject']}</h1>
+                                <h5 class="col col-5">Next attempt:<br>${new Date(review['next-attempt']).toLocaleDateString()}</h5>
+                            </div>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>                       
                         </div>
                         <div class="modal-body">
