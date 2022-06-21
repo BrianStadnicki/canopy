@@ -82,7 +82,7 @@ function renderReview(review) {
                             <hr>
                             <p style="white-space: pre-line">${review['additional-information']}</p>
                             <hr>
-                            <p style="white-space: pre-wrap;">${review['resources']}</p>
+                            <p style="white-space: pre-line;">${review['resources']}</p>
                         </div>
                     </div>
                 </div>
