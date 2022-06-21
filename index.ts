@@ -91,7 +91,7 @@ function renderReview(review) {
                 </div>
             </div>
             <div class="modal fade" id="edit-review-modal-${review['id']}" tabindex="-1" aria-labelledby="edit-review-modal-label-${review['id']}" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
+                <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="edit-review-modal-label-${review['id']}">Edit review</h5>
