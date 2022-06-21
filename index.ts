@@ -66,6 +66,8 @@ function renderReview(review) {
                             <b>${review['content']}</b>
                             <hr>
                             <p style="white-space: pre-wrap;">${review['additional-information']}</p>
+                            <hr>
+                            <p style="white-space: pre-wrap;">${review['resources']}</p>
                         </div>
                     </div>
                 </div>
