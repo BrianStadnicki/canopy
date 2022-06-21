@@ -12,10 +12,14 @@ window.onload = function () {
 function loadReviews() {
     document.getElementById('reviews-list').innerHTML = "";
 
-    let reviews = JSON.parse(localStorage.getItem('reviews')).map(id =>
-        renderReview(JSON.parse(localStorage.getItem('review-' + id))));
+    let reviews = JSON.parse(localStorage.getItem('reviews'))
+        .map(id => JSON.parse(localStorage.getItem('review-' + id)))
+        .sort(function (a, b) {return a['next-attempt'] - b['next-attempt']});
 
-    document.getElementById('reviews-list').innerHTML = reviews.join('');
+    let reviewsHTML = reviews.map(review =>
+        renderReview(review));
+
+    document.getElementById('reviews-list').innerHTML = reviewsHTML.join('');
 }
 
 function renderReview(review) {
