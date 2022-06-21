@@ -14,21 +14,36 @@ function loadReviews() {
 
     let reviews = JSON.parse(localStorage.getItem('reviews'))
         .map(id => JSON.parse(localStorage.getItem('review-' + id)))
-        .sort(function (a, b) {return a['next-attempt'] - b['next-attempt']});
+        .sort(function (a, b) {return a['next-attempt'] - b['next-attempt']})
+        .reduce((group, review) => {
+            const date = new Date(review['next-attempt']).toLocaleDateString();
+            group[date] = [...group[date] ?? [], review];
+            return group;
+        }, {});
 
-    let reviewsHTML = reviews.map(review =>
-        renderReview(review));
-
-    document.getElementById('reviews-list').innerHTML = reviewsHTML.join('');
+    document.getElementById('reviews-list').innerHTML =
+        Object.keys(reviews)
+        .map(date => {
+            return `
+            <div id="reviews-date-${date}" class="card">
+                <div class="card-header">
+                    <h1 class="fs-3">${date}</h1>
+                </div>
+                <div class="card-body row row-cols-2">
+                    ${reviews[date].map(review => renderReview(review)).join('')}
+                </div>
+            </div>
+            `
+        })
+        .join('');
 }
 
 function renderReview(review) {
     return `
-        <div id="review-${review['id']}" class="card col-5 mb-2">
+        <div id="review-${review['id']}" class="card col col-6 mb-2">
             <div class="card-header">
                 <h1>${review['subject']}
                     <div class="float-end fs-4">
-                        ${new Date(review['next-attempt']).toLocaleDateString()}
                         <button class="btn btn-secondary me-2" data-bs-toggle="modal" data-bs-target="#edit-review-modal-${review['id']}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>

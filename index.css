@@ -1,6 +1,6 @@
 /* courses list window-size-friendly */
-@media (max-width: 800px) {
-    #reviews-list > div {
+@media (max-width: 830px) {
+    #reviews-list > .card > .card-body > .card {
         display: inline-block;
         width: 100%
     }
