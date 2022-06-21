@@ -120,8 +120,9 @@ function renderReview(review) {
                                     <label for="additional-information" class="form-label">Additional information</label>
                                 </div>
                                 <div class="mb-3 form-floating">
-                                    <textarea class="form-control" id="resources" placeholder="N/A" rows="5">${review['resources']}</textarea>
+                                    <textarea class="form-control" id="resources" placeholder="N/A" rows="5" aria-describedby="resourcesHelp">${review['resources'].split('\n').map(str => str.match('(?<=<a href=")(?:.)*(?=">)') ?? str).join('\n')}</textarea>
                                     <label for="resources" class="form-label">Resources</label>
+                                    <div id="resourcesHelp" class="form-text">Links must be on separate lines</div>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -182,7 +183,7 @@ function createReview(form: HTMLFormElement) {
         'sub-topic': form.elements['sub-topic'].value,
         'content': form.elements['content'].value,
         'additional-information': form.elements['additional-information'].value,
-        'resources': form.elements['resources'].value,
+        'resources': form.elements['resources'].value.split('\n').map(str => (str.startsWith('http://') || str.startsWith('https://')) ? `<a href="${str}">${str}</a>` : str).join('\n'),
         'created': Date.now(),
         'next-attempt': now.setDate(now.getDate() + 1),
         'attempts': []
