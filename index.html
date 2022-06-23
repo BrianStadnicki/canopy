@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Canopy</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-    <link href="index.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
     <script src="index.js"></script>
 
@@ -21,7 +20,7 @@
                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Settings</a>
+                        <button class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#modal-new-review">New review</button>
                     </li>
                 </ul>
             </div>
@@ -29,60 +28,44 @@
     </nav>
 </head>
 <body>
-    <div class="card mx-1 mt-2">
-        <div class="card-header">
-            <h1 class="float-start">Reviews</h1>
-            <button id="create-review-modal-btn" type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#create-review-model">Create review</button>
-            <div class="modal fade" id="create-review-model" tabindex="-1" aria-labelledby="create-review-model-label" aria-hidden="true">
-                <div class="modal-dialog modal-xl">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="create-review-model-label">Create review</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <form id="new-review-form" role="form" data-lpignore="true">
-                            <div class="modal-body">
-                                <div class="mb-3 form-floating">
-                                    <input type="text" class="form-control" id="subject" placeholder="N/A" required>
-                                    <label for="subject" class="form-label">Subject</label>
-                                </div>
-                                <div class="mb-3 form-floating">
-                                    <input type="text" class="form-control" id="topic" placeholder="N/A" required>
-                                    <label for="topic" class="form-label">Topic</label>
-                                </div>
-                                <div class="mb-3 form-floating">
-                                    <input type="text" class="form-control" id="sub-topic" placeholder="N/A" required>
-                                    <label for="sub-topic" class="form-label">Sub-topic</label>
-                                </div>
-                                <div class="mb-3 form-floating">
-                                    <textarea class="form-control" id="content" placeholder="N/A" required></textarea>
-                                    <label for="content" class="form-label">Content</label>
-                                </div>
-                                <div class="mb-3 form-floating">
-                                    <textarea class="form-control" id="additional-information" placeholder="N/A" rows="10"></textarea>
-                                    <label for="additional-information" class="form-label">Additional information</label>
-                                </div>
-                                <div class="mb-3 form-floating">
-                                    <textarea class="form-control" id="resources" placeholder="N/A" rows="5" aria-describedby="resourcesHelp"></textarea>
-                                    <label for="resources" class="form-label">Resources</label>
-                                    <div id="resourcesHelp" class="form-text">Links must be on separate lines</div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button id="create-review-model-close-btn" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button id="create-review-model-submit-btn" type="submit" class="btn btn-primary">Save changes</button>
-                            </div>
-                        </form>
+
+<div id="reviews" class="mx-2">
+
+</div>
+
+<div class="modal modal-lg fate" id="modal-new-review" tabindex="-1">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New review</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form onsubmit="formNewReview(this)">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="subject" class="form-label">Subject</label>
+                        <input type="text" class="form-control" id="subject">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="title">
+                    </div>
+
+                    <label class="form-label">Resources</label>
+                    <button class="btn btn-primary float-end" type="button" id="btn-new-review-new-resource" onclick="formNewReviewAddResource()">+</button>
+
+                    <div id="modal-new-review-resources" class="mb-3 mt-3">
+
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="card-body">
-            <div id="reviews-list" class="col">
-
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="new-review-form-close-btn" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Create review</button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 </body>
 </html>
