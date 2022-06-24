@@ -50,7 +50,7 @@ function loadReviews() {
                                                             <button class="btn btn-sm btn-primary float-end">
                                                                 <img src="icons/check2-square.svg" alt="check">
                                                             </button>
-                                                            <button class="btn btn-sm btn-secondary float-end me-2" onclick="editReview(${review['id']})">
+                                                            <button class="btn btn-sm btn-secondary float-end me-2" onclick="editReview(${review['id']})" data-bs-toggle="modal" data-bs-target="#modal-new-review">
                                                                 <img src="icons/pencil-square.svg" alt="edit">
                                                             </button>
                                                             <button class="btn btn-sm btn-danger float-end me-2" onclick="deleteReview(${review['id']})">
@@ -124,9 +124,6 @@ function editReview(id: number) {
     let newReviewBtn = document.getElementById('new-review-from-create-btn');
     let newReviewFormTitleElement = document.getElementById('form-new-review-title');
 
-    let pastTitle = newReviewFormTitleElement.textContent;
-    let pastBtnText = newReviewBtn.textContent;
-
     newReviewBtn.textContent = "Save changes";
     newReviewFormTitleElement.textContent = "Edit review";
 
@@ -166,8 +163,8 @@ function editReview(id: number) {
         form['disabled'] = false;
 
         document.getElementById('modal-new-review-resources').innerHTML = "";
-        newReviewFormTitleElement.textContent = pastTitle;
-        newReviewBtn.textContent = pastBtnText;
+        newReviewFormTitleElement.textContent = "New review";
+        newReviewBtn.textContent = "Create review";
 
         document.getElementById('new-review-form-close-btn').click();
         loadReviews();
@@ -182,8 +179,18 @@ function editReview(id: number) {
         form.elements['resource-location-' + (newReviewResourcesCount - 1)].value = resource['location'];
         form.elements['resource-type-' + (newReviewResourcesCount - 1)].value = resource['type'];
     });
+}
 
-    document.getElementById('new-review-btn').click();
+function onFormNewReviewBtn() {
+    let form = <HTMLFormElement>document.getElementById('form-new-review');
+    form.elements['title'].value = "";
+    form.elements['subject'].value = "";
+    document.getElementById('modal-new-review-resources').innerHTML = "";
+
+    document.getElementById('new-review-from-create-btn').textContent = "Create review";
+    document.getElementById('form-new-review-title').textContent = "New review";
+
+    newReviewResourcesCount = 0;
 }
 
 function formNewReview(form: HTMLFormElement) {
