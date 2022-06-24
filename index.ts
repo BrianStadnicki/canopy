@@ -48,7 +48,7 @@ function loadReviews() {
                                                         <div>
                                                             <div class="float-start">${review['title']}</div>
                                                             <button class="btn btn-sm btn-primary float-end">
-                                                                <img src="icons/check2-square.svg" alt="check">
+                                                                <img src="icons/check2-square.svg" alt="check" onclick="completedReviewBtn(${review['id']})" data-bs-toggle="modal" data-bs-target="#modal-completed-review">
                                                             </button>
                                                             <button class="btn btn-sm btn-secondary float-end me-2" onclick="editReview(${review['id']})" data-bs-toggle="modal" data-bs-target="#modal-new-review">
                                                                 <img src="icons/pencil-square.svg" alt="edit">
@@ -97,6 +97,58 @@ function loadReviews() {
                 `
             })
             .join('');
+}
+
+function completedReview(form: HTMLFormElement) {
+    let id = form.elements['review-id'].value;
+    let review = JSON.parse(localStorage.getItem('review-' + id));
+
+    let quality = Math.round((form.elements['mark'].value / form.elements['max'].value) * 6);
+
+    let repetitions = review['repetitions'];
+    let previousInterval = review['interval'];
+    let previousEaseFactor = review['ease-factor'];
+
+    let interval: number;
+    let easeFactor: number;
+
+    if (quality >= 3) {
+        switch (repetitions) {
+            case 0:
+                interval = 1;
+                break;
+            case 1:
+                interval = 6;
+                break;
+            default:
+                interval = Math.round(previousInterval * previousEaseFactor);
+        }
+
+        repetitions += 1;
+        easeFactor = previousEaseFactor + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02));
+    } else {
+        repetitions = 0;
+        interval = 1;
+        easeFactor = previousEaseFactor;
+    }
+
+    if (easeFactor < 1.3) {
+        easeFactor = 1.3;
+    }
+
+    let date = new Date(review['next-attempt']);
+    date.setDate(date.getDate() + interval);
+
+    review['next-attempt'] = date.valueOf();
+    review['interval'] = interval;
+    review['repetitions'] = repetitions;
+    review['ease-factor'] = easeFactor;
+
+    localStorage.setItem('review-' + id, JSON.stringify(review));
+}
+
+function completedReviewBtn(id: number) {
+    (<HTMLFormElement>document.getElementById('form-completed-review')).elements['review-id'].value = id;
 }
 
 function changeResourceStatus(reviewID: number, resourceID: number) {
@@ -155,7 +207,10 @@ function editReview(id: number) {
             'title': form.elements['title'].value,
             'subject': form.elements['subject'].value,
             'resources': resources,
-            'next-attempt': review['next-attempt']
+            'next-attempt': review['next-attempt'],
+            'repetitions': review['repetitions'],
+            'interval': review['interval'],
+            'ease-factor': review['ease-factor']
         }
         localStorage.setItem('review-' + editedReview['id'], JSON.stringify(editedReview));
 
@@ -224,7 +279,10 @@ function formNewReview(form: HTMLFormElement) {
         'title': form.elements['title'].value,
         'subject': form.elements['subject'].value,
         'resources': resources,
-        'next-attempt': date.valueOf()
+        'next-attempt': date.valueOf(),
+        'repetitions': 1,
+        'interval': 1,
+        'ease-factor': 2.5
     }
 
     localStorage.setItem('reviews', JSON.stringify(JSON.parse(localStorage.getItem('reviews')).concat(review.id)));
