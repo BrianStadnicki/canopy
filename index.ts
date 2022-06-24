@@ -70,7 +70,7 @@ function loadReviews() {
                                                                     ${review['resources'].map(resource => {
                                                                         return `
                                                                             <div class="container-fluid mb-2">
-                                                                                <button class="col col-4 col-md-3 col-lg-2 me-2 btn btn-outline-primary"
+                                                                                <button class="col col-4 col-md-3 col-lg-2 col-xxl-1 me-2 btn btn-outline-primary"
                                                                                     id="review-${review['id']}-resource-${review['resources'].indexOf(resource)}-btn"
                                                                                     onclick="changeResourceStatus(${review['id']}, ${review['resources'].indexOf(resource)})">
                                                                                     ${ReviewStatus.NotDone == resource['status'] ? "Not Done" : (ReviewStatus.PartlyDone == resource['status'] ? "Partly Done" : "Done")}
