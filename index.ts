@@ -93,9 +93,11 @@ function loadReviews() {
 }
 
 function deleteReview(id: number) {
-    localStorage.removeItem('review-' + id);
-    localStorage.setItem('reviews', JSON.stringify(JSON.parse(localStorage.getItem('reviews')).filter(a => a !== id)));
-    loadReviews();
+    if (confirm("Are you sure you want to delete this review?")) {
+        localStorage.removeItem('review-' + id);
+        localStorage.setItem('reviews', JSON.stringify(JSON.parse(localStorage.getItem('reviews')).filter(a => a !== id)));
+        loadReviews();
+    }
 }
 
 function editReview(id: number) {
