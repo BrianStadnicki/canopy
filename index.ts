@@ -68,11 +68,18 @@ function loadReviews() {
                                                             <div class="collapse" id="review-collapse-${review['id']}">
                                                                 <div class="card card-body">
                                                                     ${review['resources'].map(resource => {
-                                                                        if (resource['type'] === "url") {
-                                                                            return `<a href="${resource['location']}" target="_blank">${resource['location']}</a>`
-                                                                        } else {
-                                                                            return `<span>${resource['location']}</span>`
-                                                                        }
+                                                                        return `
+                                                                            <div class="container-fluid mb-2">
+                                                                                <button class="col col-4 col-md-3 col-lg-2 me-2 btn btn-outline-primary"
+                                                                                    id="review-${review['id']}-resource-${review['resources'].indexOf(resource)}-btn"
+                                                                                    onclick="changeResourceStatus(${review['id']}, ${review['resources'].indexOf(resource)})">
+                                                                                    ${ReviewStatus.NotDone == resource['status'] ? "Not Done" : (ReviewStatus.PartlyDone == resource['status'] ? "Partly Done" : "Done")}
+                                                                                </button>
+                                                                                ${resource['type'] === "url" ? 
+                                                                                    `<a class="col col-10" href="${resource['location']}" target="_blank">${resource['location']}</a>` :
+                                                                                    `<span class="col col-10">${resource['location']}</span>`}
+                                                                            </div>
+                                                                        `
                                                                     }).join('')}
                                                                 </div>
                                                             </div>
@@ -90,6 +97,19 @@ function loadReviews() {
                 `
             })
             .join('');
+}
+
+function changeResourceStatus(reviewID: number, resourceID: number) {
+    let review = JSON.parse(localStorage.getItem('review-' + reviewID));
+    let currentStatus = review['resources'][resourceID]['status'];
+    let newStatus = ReviewStatus.NotDone == currentStatus
+        ? ReviewStatus.PartlyDone :
+        (ReviewStatus.PartlyDone == currentStatus ? ReviewStatus.Done : ReviewStatus.NotDone);
+    review['resources'][resourceID]['status'] = newStatus;
+    localStorage.setItem('review-' + reviewID, JSON.stringify(review));
+
+    document.getElementById('review-' + reviewID + '-resource-' + resourceID + '-btn').textContent =
+        ReviewStatus.NotDone == newStatus ? "Not Done" : (ReviewStatus.PartlyDone == newStatus ? "Partly Done" : "Done");
 }
 
 function deleteReview(id: number) {
