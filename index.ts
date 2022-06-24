@@ -69,7 +69,7 @@ function loadReviews() {
                                                                 <div class="card card-body">
                                                                     ${review['resources'].map(resource => {
                                                                         if (resource['type'] === "url") {
-                                                                            return `<a href="${resource['location']}">${resource['location']}</a>`
+                                                                            return `<a href="${resource['location']}" target="_blank">${resource['location']}</a>`
                                                                         } else {
                                                                             return `<span>${resource['location']}</span>`
                                                                         }
