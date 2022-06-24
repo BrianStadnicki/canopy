@@ -38,7 +38,7 @@ function loadReviews() {
                             return `
                                 <div class="row mb-2 p-2 border rounded">
                                     <div class="col col-12 col-md-2 col-xl-1 mb-2 border rounded">
-                                        ${subject[0]['subject']}
+                                        ${sanitiseHTML(subject[0]['subject'])}
                                     </div>
                                     <div class="col">
                                         <ul class="list-group">
@@ -46,7 +46,7 @@ function loadReviews() {
                                                 return `
                                                     <li class="list-group-item vstack gap-2">
                                                         <div>
-                                                            <div class="float-start">${review['title']}</div>
+                                                            <div class="float-start">${sanitiseHTML(review['title'])}</div>
                                                             <button class="btn btn-sm btn-primary float-end">
                                                                 <img src="icons/check2-square.svg" alt="check" onclick="completedReviewBtn(${review['id']})" data-bs-toggle="modal" data-bs-target="#modal-completed-review">
                                                             </button>
@@ -76,8 +76,8 @@ function loadReviews() {
                                                                                     ${ReviewStatus.NotDone == resource['status'] ? "Not Done" : (ReviewStatus.PartlyDone == resource['status'] ? "Partly Done" : "Done")}
                                                                                 </button>
                                                                                 ${resource['type'] === "url" ? 
-                                                                                    `<a class="col col-10" href="${resource['location']}" target="_blank">${resource['location']}</a>` :
-                                                                                    `<span class="col col-10">${resource['location']}</span>`}
+                                                                                    `<a class="col col-10" href="${sanitiseHTML(resource['location'])}" target="_blank">${resource['location']}</a>` :
+                                                                                    `<span class="col col-10">${sanitiseHTML(resource['location'])}</span>`}
                                                                             </div>
                                                                         `
                                                                     }).join('')}
@@ -313,4 +313,10 @@ function formNewReviewAddResource() {
     );
 
     newReviewResourcesCount += 1;
+}
+
+function sanitiseHTML(text) {
+    let element = document.createElement('div');
+    element.innerText = text;
+    return element.innerHTML;
 }
