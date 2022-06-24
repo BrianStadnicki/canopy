@@ -50,10 +50,14 @@ function loadReviews() {
                                                             <button class="btn btn-sm btn-primary float-end">
                                                                 <img src="icons/check2-square.svg" alt="check">
                                                             </button>
-                                                            <button class="btn btn-sm btn-secondary float-end me-2">
+                                                            <button class="btn btn-sm btn-secondary float-end me-2" onclick="editReview(${review['id']})">
                                                                 <img src="icons/pencil-square.svg" alt="edit">
                                                             </button>
-                                                            ${ review['resources'].length !== 0 ? `
+                                                            <button class="btn btn-sm btn-danger float-end me-2" onclick="deleteReview(${review['id']})">
+                                                                <img src="icons/trash.svg" alt="delete">
+                                                            </button>
+                                                            
+                                                            ${review['resources'].length !== 0 ? `
                                                                 <button class="btn btn-sm btn-outline-primary float-end me-2" data-bs-toggle="collapse" data-bs-target="#review-collapse-${review['id']}">
                                                                     Resources
                                                                 </button>
@@ -86,6 +90,78 @@ function loadReviews() {
                 `
             })
             .join('');
+}
+
+function deleteReview(id: number) {
+    localStorage.removeItem('review-' + id);
+    localStorage.setItem('reviews', JSON.stringify(JSON.parse(localStorage.getItem('reviews')).filter(a => a !== id)));
+    loadReviews();
+}
+
+function editReview(id: number) {
+    let newReviewBtn = document.getElementById('new-review-from-create-btn');
+    let newReviewFormTitleElement = document.getElementById('form-new-review-title');
+
+    let pastTitle = newReviewFormTitleElement.textContent;
+    let pastBtnText = newReviewBtn.textContent;
+
+    newReviewBtn.textContent = "Save changes";
+    newReviewFormTitleElement.textContent = "Edit review";
+
+    document.getElementById('modal-new-review-resources').innerHTML = "";
+
+    let review = JSON.parse(localStorage.getItem('review-' + id));
+
+    let form = <HTMLFormElement>document.getElementById('form-new-review');
+    let pastFormSubmit = form.onsubmit;
+
+    form.onsubmit = function () {
+        form['disabled'] = true;
+
+        let resources = [];
+        let resourceCounter = 0;
+        while (form.elements['resource-location-' + resourceCounter]) {
+            if (form.elements['resource-location-' + resourceCounter].value !== "") {
+                resources.push({
+                    'location': form.elements['resource-location-' + resourceCounter].value,
+                    'type': form.elements['resource-type-' + resourceCounter].value,
+                    'status': ReviewStatus.NotDone
+                })
+            }
+            resourceCounter += 1;
+        }
+
+        let editedReview = {
+            'id': id,
+            'title': form.elements['title'].value,
+            'subject': form.elements['subject'].value,
+            'resources': resources,
+            'next-attempt': review['next-attempt']
+        }
+        localStorage.setItem('review-' + editedReview['id'], JSON.stringify(editedReview));
+
+        form.onsubmit = pastFormSubmit;
+        form['disabled'] = false;
+
+        document.getElementById('modal-new-review-resources').innerHTML = "";
+        newReviewFormTitleElement.textContent = pastTitle;
+        newReviewBtn.textContent = pastBtnText;
+
+        document.getElementById('new-review-form-close-btn').click();
+        loadReviews();
+    }
+
+    form.elements['title'].value = review['title'];
+    form.elements['subject'].value = review['subject'];
+
+    let resources = review['resources'];
+    resources.forEach(resource => {
+        formNewReviewAddResource();
+        form.elements['resource-location-' + (newReviewResourcesCount - 1)].value = resource['location'];
+        form.elements['resource-type-' + (newReviewResourcesCount - 1)].value = resource['type'];
+    });
+
+    document.getElementById('new-review-btn').click();
 }
 
 function formNewReview(form: HTMLFormElement) {

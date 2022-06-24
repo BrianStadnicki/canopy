@@ -20,7 +20,7 @@
                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <button class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#modal-new-review">New review</button>
+                        <button class="btn btn-primary ms-2" id="new-review-btn" data-bs-toggle="modal" data-bs-target="#modal-new-review">New review</button>
                     </li>
                 </ul>
             </div>
@@ -37,10 +37,10 @@
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">New review</h5>
+                <h5 class="modal-title" id="form-new-review-title">New review</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form onsubmit="formNewReview(this)">
+            <form onsubmit="formNewReview(this)" id="form-new-review">
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="subject" class="form-label">Subject</label>
@@ -61,7 +61,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" id="new-review-form-close-btn" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Create review</button>
+                    <button type="submit" class="btn btn-primary" id="new-review-from-create-btn">Create review</button>
                 </div>
             </form>
         </div>
