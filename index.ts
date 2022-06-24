@@ -47,22 +47,22 @@ function loadReviews() {
                                                     <li class="list-group-item vstack gap-2">
                                                         <div>
                                                             <div class="float-start">${sanitiseHTML(review['title'])}</div>
-                                                            <button class="btn btn-sm btn-primary float-end">
-                                                                <img src="icons/check2-square.svg" alt="check" onclick="completedReviewBtn(${review['id']})" data-bs-toggle="modal" data-bs-target="#modal-completed-review">
-                                                            </button>
-                                                            <button class="btn btn-sm btn-secondary float-end me-2" onclick="editReview(${review['id']})" data-bs-toggle="modal" data-bs-target="#modal-new-review">
-                                                                <img src="icons/pencil-square.svg" alt="edit">
-                                                            </button>
-                                                            <button class="btn btn-sm btn-danger float-end me-2" onclick="deleteReview(${review['id']})">
-                                                                <img src="icons/trash.svg" alt="delete">
-                                                            </button>
-                                                            
+                                                            <div class="float-end row">
                                                             ${review['resources'].length !== 0 ? `
-                                                                <button class="btn btn-sm btn-outline-primary float-end me-2" data-bs-toggle="collapse" data-bs-target="#review-collapse-${review['id']}">
+                                                                <button class="col btn btn-sm btn-outline-primary float-end me-2" data-bs-toggle="collapse" data-bs-target="#review-collapse-${review['id']}">
                                                                     Resources
                                                                 </button>
-                                                            ` : '' }
-                                                            
+                                                                ` : '' }
+                                                                <button class="col btn btn-sm btn-danger float-end me-2" onclick="deleteReview(${review['id']})">
+                                                                    <img src="icons/trash.svg" alt="delete">
+                                                                </button>
+                                                                <button class="col btn btn-sm btn-secondary float-end me-2" onclick="editReview(${review['id']})" data-bs-toggle="modal" data-bs-target="#modal-new-review">
+                                                                    <img src="icons/pencil-square.svg" alt="edit">
+                                                                </button>
+                                                                <button class="col btn btn-sm btn-primary float-end">
+                                                                    <img src="icons/check2-square.svg" alt="check" onclick="completedReviewBtn(${review['id']})" data-bs-toggle="modal" data-bs-target="#modal-completed-review">
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                         ${review['resources'].length !== 0 ? `
                                                             <div class="collapse" id="review-collapse-${review['id']}">
