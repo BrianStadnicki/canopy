@@ -8,23 +8,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
     <script src="index.js"></script>
 
-    <nav class="navbar navbar-expand-sm bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Canopy</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <button class="btn btn-primary ms-2" id="new-review-btn" data-bs-toggle="modal" data-bs-target="#modal-new-review" onclick="onFormNewReviewBtn()">New review</button>
-                    </li>
-                </ul>
-            </div>
-        </div>
+    <nav class="navbar bg-light justify-content-start">
+        <a class="navbar-brand ms-2 float-start" href="#">Canopy</a>
+        <button class="btn btn-primary me-2 float-start" id="new-review-btn" data-bs-toggle="modal" data-bs-target="#modal-new-review" onclick="onFormNewReviewBtn()">New review</button>
+        <button class="btn btn-secondary me-2 float-start" id="help-btn" data-bs-toggle="modal" data-bs-target="#modal-help">Help</button>
     </nav>
 </head>
 <body>
@@ -92,5 +79,32 @@
         </div>
     </div>
 </div>
+
+<div class="modal modal-xl" tabindex="-1" id="modal-help">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Help page</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h5>Welcome to Canopy, the spaced repetition revision tracker!</h5>
+                <ul>
+                    <li>Every time you learn something (at school), create a new review for it.</li>
+                    <li>Each day, check what you need to review.</li>
+                    <li>Answer some questions about each topic for the day.</li>
+                    <li>Mark your answers.</li>
+                    <li>Mark the review as completed and enter your score.</li>
+                </ul>
+                <p>
+                    That's it.<br>
+                    No fanfare, no charts, no fluff, nothing to distract you.<br>
+                    Canopy is just a tracker.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
