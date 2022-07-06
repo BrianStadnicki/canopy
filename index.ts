@@ -53,13 +53,13 @@ function loadReviews() {
                                                                     Resources
                                                                 </button>
                                                                 ` : '' }
-                                                                <button class="col btn btn-sm btn-danger float-end me-2" onclick="deleteReview(${review['id']})">
+                                                                <button class="col btn btn-sm btn-danger float-end me-2" onclick="deleteReview(${review['id']})" title="Delete">
                                                                     <img src="icons/trash.svg" alt="delete">
                                                                 </button>
-                                                                <button class="col btn btn-sm btn-secondary float-end me-2" onclick="editReview(${review['id']})" data-bs-toggle="modal" data-bs-target="#modal-new-review">
+                                                                <button class="col btn btn-sm btn-secondary float-end me-2" onclick="editReview(${review['id']})" data-bs-toggle="modal" data-bs-target="#modal-new-review" title="Edit">
                                                                     <img src="icons/pencil-square.svg" alt="edit">
                                                                 </button>
-                                                                <button class="col btn btn-sm btn-primary float-end">
+                                                                <button class="col btn btn-sm btn-primary float-end" title="Complete">
                                                                     <img src="icons/check2-square.svg" alt="check" onclick="completedReviewBtn(${review['id']})" data-bs-toggle="modal" data-bs-target="#modal-completed-review">
                                                                 </button>
                                                             </div>
